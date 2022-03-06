@@ -1,10 +1,19 @@
+resource "azurerm_public_ip" "lb_ip" {
+  name                = "publicIPForLB"
+  location            = var.location
+  resource_group_name = var.rg2
+  allocation_method   = "Static"
+  domain_name_label   = var.domain_name
+}
+
+
 resource "azurerm_lb" "assignment1" {
   name                = "lb-assignment1-6507"
   location            = var.location
   resource_group_name = var.rg2
   frontend_ip_configuration {
     name                 = "PublicIPAddress-6507"
-    public_ip_address_id =  var.public_ip_address_id
+    public_ip_address_id = azurerm_public_ip.lb_ip.id
   }
 }
 
