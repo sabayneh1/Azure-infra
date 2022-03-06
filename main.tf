@@ -82,6 +82,7 @@ module "load_balancer" {
   public_ip_address_id = [module.linux.Linux_public_ip_addresses]
   linux_nic            = module.linux.linux_nic
   depends_on           = [module.network, module.linux, module.windows]
+  domain_name          =  module.linux.linux_domain_names 
 
 }
 
