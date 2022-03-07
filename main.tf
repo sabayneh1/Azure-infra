@@ -81,8 +81,9 @@ module "load_balancer" {
   location             = module.resource_group.rg2.location
   public_ip_address_id = [module.linux.Linux_public_ip_addresses]
   linux_nic            = module.linux.linux_nic
+  domain_name          =  module.linux.linux_domain_names  
   depends_on           = [module.network, module.linux, module.windows]
-  domain_name          =  module.linux.linux_domain_names 
+   
 
 }
 
