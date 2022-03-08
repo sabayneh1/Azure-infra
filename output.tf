@@ -49,7 +49,10 @@ output "linux_nic" {
 
 }
 
+output "network_interface_id" {
+  value = module.linux.linux_nic
 
+}
 # output "windows_domain_names" {
 #   value = module.windows.windows_domain_names
 
@@ -70,3 +73,12 @@ output "windows_public_ip_addresses" {
 
 }
 
+output "window_virtual_machine_ids" {
+  value = module.windows.window_virtual_machine_ids
+
+}
+
+output "domain_name_label" {
+  value = module.linux.domain_name_label
+  
+}

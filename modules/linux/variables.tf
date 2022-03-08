@@ -9,8 +9,12 @@ locals {
 }
 
 
-variable "linux_name" { # default = "lab03s2-db1-u-vm1" 
-}
+variable "linux_name" {
+  type    = map(string)
+  default = {}
+ }          
+
+
 variable "vm_size" {
   default = "Standard_B1s"
 
@@ -61,9 +65,9 @@ variable "linux_version" {
 variable "linux_avs" {
   # default = "linux_avs"
 }
-variable "nb_count" {
-  # default = "2"
-}
+# variable "nb_count" {
+#   # default = "2"
+# }
 variable "subnet" {}
 
 variable "linux_rg2" {}

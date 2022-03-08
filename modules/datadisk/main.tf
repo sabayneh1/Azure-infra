@@ -13,7 +13,7 @@ resource "azurerm_managed_disk" "data_disk1" {
 resource "azurerm_virtual_machine_data_disk_attachment" "data_disk_attach1" {
   for_each           = var.windows_name
   managed_disk_id    = azurerm_managed_disk.data_disk1[each.key].id
-  virtual_machine_id = var.windows_name[each.key]
+  virtual_machine_id = element(var.window_virtual_machine_ids, 0)[0]
   lun                = 0
   caching            = "ReadWrite"
   #   caching            = var.data_disk_attr["data_disk_caching"]
@@ -34,10 +34,11 @@ resource "azurerm_managed_disk" "data_disk2" {
 
 resource "azurerm_virtual_machine_data_disk_attachment" "data_disk_attach2" {
   for_each = var.linux_name
+
   // might be defined as variable an called from main module. Siblings cannot refer each other
   // linux name can be defined in linux output and main output then we can use here as variable.
   managed_disk_id    = azurerm_managed_disk.data_disk2[each.key].id
-  virtual_machine_id = var.linux_name[each.key]
+  virtual_machine_id = element(var.linux_virtual_machine_ids, 0)[0]
   lun                = 0
   caching            = "ReadWrite"
   depends_on         = [azurerm_managed_disk.data_disk2]

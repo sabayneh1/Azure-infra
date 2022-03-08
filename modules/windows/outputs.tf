@@ -13,7 +13,9 @@ output "windows_public_ip_addresses" {
 
 }
 
-
+output "window_virtual_machine_ids" {
+  value = values(azurerm_windows_virtual_machine.vmWin)[*].id
+}
 # output "windows_domain_names" {
 
 #   value = azurerm_public_ip.windwos_pip[*].fqdn

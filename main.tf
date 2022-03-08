@@ -35,9 +35,10 @@ module "common" {
 
 module "linux" {
   source     = "./modules/linux"
-  linux_name = "terrafrom-u-vm"
+  # linux_name =  "linux-centos-vm"
+   linux_name                 = {linux-centos-vm = "Standard_B1s"
+                                linux-centos-vm1 = "Standard_B1s"              }
   linux_avs  = "linux-avs"
-  nb_count   = 2
   linux_rg2  = module.resource_group.rg2.name
   location   = module.resource_group.rg2.location
   subnet     = module.network.subnet
@@ -65,31 +66,36 @@ module "windows" {
 
 
 module "datadisk" {
-  source       = "./modules/datadisk"
-  rg2          = module.resource_group.rg2.name
-  location     = module.resource_group.rg2.location
-  linux_name   = module.linux.Linux_hostname
-  windows_name = values(module.windows.windows_hostname)
-  depends_on   = [module.linux, module.windows]
+  source                     = "./modules/datadisk"
+  rg2                        = module.resource_group.rg2.name
+  location                   = module.resource_group.rg2.location
+  linux_name                 = {linux-centos-vm = "Standard_B1s"
+                                linux-centos-vm1 = "Standard_B1s"              }
+  linux_virtual_machine_ids  = [module.linux.linux_virtual_machine_ids]
+  windows_name               = { win-server-vm = "Standard_B1s" }
+  window_virtual_machine_ids = [module.windows.window_virtual_machine_ids]
+  depends_on                 = [module.linux, module.windows]
 
 
 }
 
 module "load_balancer" {
   source               = "./modules/load_balancer"
-  rg2                  = "rg2"
+  rg2                  = module.resource_group.rg2.name
   location             = module.resource_group.rg2.location
   public_ip_address_id = [module.linux.Linux_public_ip_addresses]
-  linux_nic            = module.linux.linux_nic
-  domain_name          =  module.linux.linux_domain_names  
+  # linux_nic            = [module.linux.linux_nic]
+  network_interface_id = [module.linux.network_interface_id]
+  # domain_name          = [module.linux.linux_domain_names]
+  domain_name_label = [module.linux.domain_name_label]
   depends_on           = [module.network, module.linux, module.windows]
-   
+
 
 }
 
 module "database" {
   source     = "./modules/database"
-  rg2        = "rg2"
+  rg2        = module.resource_group.rg2.name
   location   = module.resource_group.rg2.location
   depends_on = [module.network]
 }

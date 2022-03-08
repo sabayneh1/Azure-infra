@@ -12,16 +12,22 @@ locals {
     Environment    = "Lab"
   }
 }
-variable "linux_name" {
+variable "linux_name" { 
   type    = map(string)
-  default = null
+  default = {}
+
 }
 variable "windows_name" {
-  type = map(string)
+
 }
 
+variable "linux_virtual_machine_ids" {
 
+}
 
+variable "window_virtual_machine_ids" {
+
+}
 # variable "data_disk_attr" {
 #   type = map(string)
 #   default = {

@@ -79,3 +79,8 @@ variable "location" {
 
 # variable "resource_group" {
 # }
+
+# variable "window_virtual_machine_ids" {
+
+
+# }

@@ -33,7 +33,7 @@
 
 resource "null_resource" "linux_provisioner" {
 
-  count = var.nb_count
+  for_each = var.linux_name
 
   depends_on = [
 
@@ -60,7 +60,7 @@ resource "null_resource" "linux_provisioner" {
       private_key = file(var.priv_key)
       timeout     = "45"
 
-      host = element(azurerm_public_ip.linux_pip[*].fqdn, count.index + 1)
+      host = azurerm_public_ip.linux_pip[each.key].fqdn
 
 
     }

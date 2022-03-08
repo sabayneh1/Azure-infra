@@ -1,9 +1,9 @@
-resource "azurerm_public_ip" "LbPubIP" {
+resource "azurerm_public_ip" "lbpubip" {
   name                = "publicIPLB"
   location            = var.location
   resource_group_name = var.rg2
   allocation_method   = "Static"
-  domain_name_label   = var.domain_name
+  domain_name_label   = element(var.domain_name_label, 0)[0]
 }
 
 
@@ -13,18 +13,18 @@ resource "azurerm_lb" "assignment1" {
   resource_group_name = var.rg2
   frontend_ip_configuration {
     name                 = "PublicIPAddress-6507"
-    public_ip_address_id = azurerm_public_ip.LbPubIP.id
+    public_ip_address_id = azurerm_public_ip.lbpubip.id
   }
 }
 
 resource "azurerm_lb_backend_address_pool" "bpepool" {
-  resource_group_name = var.rg2
+  # resource_group_name = var.rg2
   loadbalancer_id     = azurerm_lb.assignment1.id
   name                = "BackEndAddressPool-6507"
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "lb_pool_association" {
-  network_interface_id    = var.linux_nic.id 
+  network_interface_id    = element(var.network_interface_id, 0)[0]
   ip_configuration_name   = "testconfiguration1"
   backend_address_pool_id = azurerm_lb_backend_address_pool.bpepool.id
 }
@@ -36,7 +36,7 @@ resource "azurerm_lb_rule" "lb_rule" {
   protocol                       = "Tcp"
   frontend_port                  = 3389
   backend_port                   = 3389
-  frontend_ip_configuration_name = "PublicIPAddress" 
+  frontend_ip_configuration_name = "PublicIPAddress"
 }
 
 resource "azurerm_lb_probe" "lb_prob" {
